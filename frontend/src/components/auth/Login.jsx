@@ -6,7 +6,7 @@ import { RadioGroup } from "../ui/radio-group";
 import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { USER_API_END_POINT } from "../../utils/backendApi";
-import { setLoading } from "../../redux/authSlice";
+import { setLoading, setUser } from "../../redux/authSlice";
 import { toast } from "sonner";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +15,7 @@ import { Loader2 } from "lucide-react";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -38,6 +39,7 @@ const Login = () => {
         withCredentials: true,
       });
       if (res.data.success) {
+        dispatch(setUser(res.data.user))
         navigate("/");
         toast.success(res.data.message);
       }
