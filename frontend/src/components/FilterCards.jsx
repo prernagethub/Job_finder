@@ -31,8 +31,15 @@ const Filter = () => {
           <RadioGroup className="space-y-2">
             {data.array.map((item, j) => (
               <div key={j} className="flex items-center space-x-2">
-                <RadioGroupItem value={item} id={`${data.filterType}-${j}`} />
-                <Label htmlFor={`${data.filterType}-${j}`} className="cursor-pointer">
+                <RadioGroupItem
+                  value={item}
+                  id={`${data.filterType}-${j}`}
+                  className="border-gray-400 data-[state=checked]:bg-purple-500 data-[state=checked]:border-blue-600"
+                />
+
+                <Label
+                  htmlFor={`${data.filterType}-${j}`}
+                  className="cursor-pointer">
                   {item}
                 </Label>
               </div>
