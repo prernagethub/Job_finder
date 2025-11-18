@@ -22,7 +22,8 @@ const Profile = () => {
           <div className="flex items-center gap-4">
             <Avatar className="h-24 w-24">
               <AvatarImage
-                src="https://www.shutterstock.com/image-vector/circle-line-simple-design-logo-600nw-2174926871.jpg"
+                className="h-24 w-24 rounded-full object-cover"
+                src={user?.profile?.profilePhoto}
                 alt="profile Image"
               />
             </Avatar>
@@ -62,7 +63,7 @@ const Profile = () => {
           {isResume ? (
             <a
               target="blank"
-              href="http://youtube.com"
+              href={user?.profile?.resume}
               className="text-blue-500 w-full hover:underline cursor-pointer">
               {user?.profile?.resumeOriginalName}
             </a>

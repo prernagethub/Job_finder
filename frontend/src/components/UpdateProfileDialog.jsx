@@ -48,9 +48,6 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     e.preventDefault();
     setLoading(true);
 
-  
-
-
     const formData = new FormData();
     formData.append("fullname", input.fullname);
     formData.append("email", input.email);

@@ -11,17 +11,18 @@ import { USER_API_END_POINT } from "@/utils/backendApi";
 import { setUser } from "@/redux/authSlice";
 
 const Navbar = () => {
-  
   const user = useSelector((store) => store.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await axios.get(`${USER_API_END_POINT}/logout`, { withCredentials: true });
+      await axios.get(`${USER_API_END_POINT}/logout`, {
+        withCredentials: true,
+      });
       dispatch(setUser(null));
       toast.success("Logged out successfully");
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       console.error("Logout failed", err);
       toast.error(err?.response?.data?.message || "Logout failed");
@@ -31,9 +32,11 @@ const Navbar = () => {
     <div className="bg-white">
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
         <div>
-          <h1 className="text-2xl font-bold">
-            Job<span className="text-[#F83002]">Portal</span>
-          </h1>
+          <Link to="/" className="hover:opacity-85">
+            <h1 className="text-2xl font-bold">
+              Job<span className="text-[#F83002]">Portal</span>
+            </h1>
+          </Link>
         </div>
         <div className="flex items-center gap-5 ">
           <ul className="flex font-medium items-center gap-5">
@@ -64,7 +67,8 @@ const Navbar = () => {
               <PopoverTrigger asChild>
                 <Avatar className="cursor-pointer">
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    className="rounded-full object-cover"
+                    src={user.profile?.profilePhoto}
                     alt="@shadcn"
                   />
                 </Avatar>
@@ -73,25 +77,30 @@ const Navbar = () => {
                 <div className="flex gap-4 space-y-2">
                   <Avatar className="cursor-pointer">
                     <AvatarImage
-                      src="https://github.com/shadcn.png"
+                      className="rounded-full object-cover"
+                      src={user.profile?.profilePhoto}
                       alt="@shadcn"
                     />
                   </Avatar>
                   <div>
-                    <h4 className="font-medium">Prerna Rajput</h4>
+                    <h4 className="font-medium">{user.fullname}</h4>
                     <p className="text-sm text-muted-foreground">
-                      Lorem ipsum dolor sit, amet{" "}
+                      {user?.profile?.bio}
                     </p>
                   </div>
                 </div>
                 <div className="flex flex-col my-2 text-gray-600">
                   <div className="flex w-fit items-center gap-2 cursor-pointer ">
                     <User2 />
-                    <Button variant="link"><Link to="/profile">View Profile</Link></Button>
+                    <Button variant="link">
+                      <Link to="/profile">View Profile</Link>
+                    </Button>
                   </div>
                   <div className="flex w-fit items-center gap-2 cursor-pointer ">
                     <LogOut />
-                    <Button variant="link" onClick={handleLogout}>Logout</Button>
+                    <Button variant="link" onClick={handleLogout}>
+                      Logout
+                    </Button>
                   </div>
                 </div>
               </PopoverContent>
