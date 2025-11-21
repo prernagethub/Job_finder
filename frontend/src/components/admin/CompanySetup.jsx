@@ -9,8 +9,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { COMPANY_API_END_POINT } from "@/utils/backendApi";
 import { useSelector } from "react-redux";
+import useGetCompanyById from "@/hooks/useGetCompanyById";
 
 const CompanySetup = () => {
+  const pramas = useParams();
+  useGetCompanyById(pramas.id);
   const [input, setInput] = useState({
     name: "",
     description: "",
@@ -20,7 +23,6 @@ const CompanySetup = () => {
   });
 
   const { singleCompany } = useSelector((store) => store.company);
-  const pramas = useParams();
   const navigate = useNavigate();
 
   const changeEventHandler = (e) => {
@@ -79,16 +81,16 @@ const CompanySetup = () => {
       <Navbar />
       <div className="max-w-xl mx-auto my-10 ">
         <form onSubmit={submitHandler}>
-          <div className="flex items-center gap-5 p-8">
+          <div className="flex items-center gap-18 p-8">
             <Button
+              className="hover:bg-gray-500 p-3 rounded-xl text-gray-500 font-semibold cursor-pointer hover:text-amber-50 flex justify-between gap-2 items-center"
               variant="Outline"
-              className="flex items-center gap-2 text-gray-500 font-semibold cursor-pointer"
               onClick={() => navigate("/admin/companies")}
             >
               <ArrowLeft />
               <span>Back</span>
             </Button>
-            <h1 className="font-bold text-xl">Comapany Name</h1>
+            <h1 className="font-bold text-xl">Comapany Details</h1>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
