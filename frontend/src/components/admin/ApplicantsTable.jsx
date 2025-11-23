@@ -11,10 +11,27 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { MoreHorizontal } from "lucide-react";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { APPLICATION_API_END_POINT } from "@/utils/backendApi";
+import { toast } from "sonner";
 
 const ApplicantsTable = () => {
   const shortLisingStatus = ["accepted", "rejected"];
   const { applicants } = useSelector((store) => store.application);
+  const statusHandler = async (status, id) => {
+    try {
+      const res = await axios.put(
+        `${APPLICATION_API_END_POINT}/status/${id}/update`,
+        { status },
+        { withCredentials: true }
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to update status");
+    }
+  };
   return (
     <div>
       <Table>
@@ -43,9 +60,14 @@ const ApplicantsTable = () => {
                 <TableCell>{item?.applicant?.email ?? "-"}</TableCell>
                 <TableCell>{item?.applicant?.phoneNumber ?? "-"}</TableCell>
                 <TableCell>
-                  {item?.resume ? (
-                    <a href={item.resume} target="_blank" rel="noreferrer">
-                      View
+                  {item?.applicant?.profile?.resume ? (
+                    <a
+                      href={item.applicant.profile.resume}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-blue-500"
+                    >
+                      {item.applicant.profile.resumeOriginalName || "View"}
                     </a>
                   ) : (
                     "NA"
@@ -63,6 +85,7 @@ const ApplicantsTable = () => {
                           <div
                             key={i}
                             className="flex w-fit items-center my-2 cursor-pointer"
+                            onClick={() => statusHandler(status, item?._id)}
                           >
                             <span>{status}</span>
                           </div>

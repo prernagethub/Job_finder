@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 const AdminJobsTable = () => {
   const { allAdminJobs, searchJobByText } = useSelector((store) => store.jobs);
-  const [filterJobs, setFilterJobs] = useState(allAdminJobs);
+  const [filterJobs, setFilterJobs] = useState(() => allAdminJobs || []);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const AdminJobsTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filterJobs.length <= 0 ? (
+          {(filterJobs || []).length <= 0 ? (
             <TableRow>
               <TableCell colSpan={4} className="text-center">
                 No Companies

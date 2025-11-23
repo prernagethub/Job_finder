@@ -7,11 +7,13 @@ import { Badge } from "./ui/badge";
 import AppliedJobTable from "./AppliedJobTable";
 import UpdateProfileDialog from "./UpdateProfileDialog";
 import { useSelector } from "react-redux";
+import useGetAppliedJobs from "@/hooks/useGetAppliedJobs";
 
 const skills = ["html", "CSS", "JavaScript", "React.js"];
 const isResume = true;
 
 const Profile = () => {
+  useGetAppliedJobs();
   const [open, setOpen] = useState(false);
   const { user } = useSelector((store) => store.auth);
   return (
@@ -64,7 +66,8 @@ const Profile = () => {
             <a
               target="blank"
               href={user?.profile?.resume}
-              className="text-blue-500 w-full hover:underline cursor-pointer">
+              className="text-blue-500 w-full hover:underline cursor-pointer"
+            >
               {user?.profile?.resumeOriginalName}
             </a>
           ) : (
