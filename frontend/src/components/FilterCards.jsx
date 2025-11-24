@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Label } from "./ui/label";
+import { useDispatch } from "react-redux";
+import { setSearchedQuery } from "@/redux/jobSlice";
 
 const Filter = () => {
   const filterData = [
@@ -18,6 +20,16 @@ const Filter = () => {
     },
   ];
 
+  const [selectedValue, setSelecteValue] = useState("");
+  const dispatch = useDispatch();
+  const changeHandler = (value) => {
+    setSelecteValue(value);
+  };
+
+  useEffect(() => {
+    // console.log(selectedValue);
+    dispatch(setSearchedQuery(selectedValue));
+  }, [selectedValue]);
   return (
     <div className="p-5 bg-white shadow-md h-full w-full md:w-72">
       <h1 className="font-semibold text-xl mb-3">Filter Jobs</h1>
@@ -28,7 +40,11 @@ const Filter = () => {
           <h2 className="text-lg font-medium mb-2 text-gray-700">
             {data.filterType}
           </h2>
-          <RadioGroup className="space-y-2">
+          <RadioGroup
+            value={selectedValue}
+            onValueChange={changeHandler}
+            className="space-y-2"
+          >
             {data.array.map((item, j) => (
               <div key={j} className="flex items-center space-x-2">
                 <RadioGroupItem
@@ -39,7 +55,8 @@ const Filter = () => {
 
                 <Label
                   htmlFor={`${data.filterType}-${j}`}
-                  className="cursor-pointer">
+                  className="cursor-pointer"
+                >
                   {item}
                 </Label>
               </div>

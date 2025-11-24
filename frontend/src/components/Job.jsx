@@ -9,19 +9,23 @@ const Job = ({ job }) => {
   const navigate = useNavigate();
   const jobId = job._id;
 
-  const daysAgoFuntion = (mongodbTime) =>{
+  const daysAgoFuntion = (mongodbTime) => {
     const createdAt = new Date(mongodbTime);
     const currentTime = new Date();
 
-    const timeDiffrence = currentTime - createdAt
-    return Math.floor(timeDiffrence/(1000*60*60*24))
-  } 
-
+    const timeDiffrence = currentTime - createdAt;
+    return Math.floor(timeDiffrence / (1000 * 60 * 60 * 24));
+  };
 
   return (
     <div className="p-5 rounded-md shadow-xl border border-gray-100 bg-white">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500"> {daysAgoFuntion(job?.createdAt) === 0 ? "Today" : `${daysAgoFuntion(job?.createdAt)} days Ago`}</p>
+        <p className="text-sm text-gray-500">
+          {" "}
+          {daysAgoFuntion(job?.createdAt) === 0
+            ? "Today"
+            : `${daysAgoFuntion(job?.createdAt)} days Ago`}
+        </p>
         <Button variant="outline" className="rounded-full" size="icon">
           <Bookmark />
         </Button>
@@ -29,7 +33,7 @@ const Job = ({ job }) => {
       <div className="flex items-center gap-2 my-2">
         <Button className="p-6" variant="outline" size="icon">
           <Avatar>
-            <AvatarImage src="https://www.shutterstock.com/image-vector/circle-line-simple-design-logo-600nw-2174926871.jpg" />
+            <AvatarImage src={job?.company?.logo} />
           </Avatar>
         </Button>
         <div>
@@ -55,7 +59,8 @@ const Job = ({ job }) => {
       <div className="flex items-center gap-4 mt-4">
         <Button
           variant="outline"
-          onClick={() => navigate(`/jobs/description/${jobId}`)}>
+          onClick={() => navigate(`/jobs/description/${jobId}`)}
+        >
           Details
         </Button>
         <Button>Save For Later</Button>

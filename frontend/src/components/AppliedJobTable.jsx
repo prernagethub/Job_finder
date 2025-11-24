@@ -1,8 +1,18 @@
 import React from "react";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./ui/table";
 import { Badge } from "./ui/badge";
+import { useSelector } from "react-redux";
 
 const AppliedJobTable = () => {
+  const { allAppliedJobs = [] } = useSelector((store) => store.jobs || {});
   return (
     <div>
       <Table>
@@ -16,14 +26,36 @@ const AppliedJobTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {[1, 2, 3, 4].map((item, index) => (
-            <TableRow key={index}>
-              <TableCell>17-07-2024</TableCell>
-              <TableCell>Frontend Developer</TableCell>
-              <TableCell>Google</TableCell>
-              <TableCell className="text-right"><Badge>Selected</Badge></TableCell>
+          {allAppliedJobs.length <= 0 ? (
+            <TableRow>
+              <TableCell colSpan={4} className="text-center">
+                Apply now, no job found
+              </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            allAppliedJobs.map((appliedJOb) => (
+              <TableRow key={appliedJOb._id}>
+                <TableCell>
+                  {appliedJOb?.createdAt?.split("T")[0] ?? "-"}
+                </TableCell>
+                <TableCell>{appliedJOb?.job?.title ?? "-"}</TableCell>
+                <TableCell>{appliedJOb?.job?.company?.name ?? "-"}</TableCell>
+                <TableCell className="text-right">
+                  <Badge
+                    className={`${
+                      appliedJOb?.status === "rejected"
+                        ? "bg-red-500"
+                        : appliedJOb?.status === "pending"
+                        ? "bg-gray-400"
+                        : "bg-green-400"
+                    }`}
+                  >
+                    {appliedJOb?.status.toUpperCase() ?? "-"}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </div>
