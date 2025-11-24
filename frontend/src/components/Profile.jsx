@@ -36,6 +36,7 @@ const Profile = () => {
             <Pen />
           </Button>
         </div>
+
         <div className="my-5">
           <div className="flex items-center gap-4">
             <Mail />
@@ -71,6 +72,7 @@ const Profile = () => {
             <span>N/A</span>
           )}
         </div>
+        
         <div className="max-w-4xl mx-auto bg-white rounded-2xl my-8">
           <h1 className="font-bold capitalize text-2xl">Applied jobs</h1>
           {/* applied job table */}

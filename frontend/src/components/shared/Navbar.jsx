@@ -28,6 +28,8 @@ const Navbar = () => {
       toast.error(err?.response?.data?.message || "Logout failed");
     }
   };
+
+  
   return (
     <div className="bg-white">
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
