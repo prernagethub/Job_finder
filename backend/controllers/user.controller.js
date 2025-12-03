@@ -125,7 +125,8 @@ export const login = async (req, res) => {
       .cookie("token", token, {
         maxAge: 15 * 60 * 1000,
         httpOnly: true, // XSS attack
-        sameSite: "strict", // CSRF attack
+        secure: true, //  // HTTPS required
+        sameSite: "none", // "strict" => CSRF attack || // ""none""  =>IMPORTANT for cross-domain cookies
       })
       .json({
         message: `Welcome back ${userData.fullname}`,
@@ -140,10 +141,18 @@ export const login = async (req, res) => {
 // logout logic____________________
 export const logout = async (req, res) => {
   try {
-    return res.status(200).cookie("token", "", { maxAge: 0 }).json({
-      message: "Logout successfully!",
-      success: true,
-    });
+    return res
+      .status(200)
+      .cookie("token", "", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        expires: new Date(0),
+      })
+      .json({
+        message: "Logout successfully!",
+        success: true,
+      });
   } catch (err) {
     console.log(err);
   }
@@ -181,7 +190,7 @@ export const updateProfile = async (req, res) => {
 
     // uploading resume if file exists
     if (file) {
-      const fileUri = getDataUri(file);  //base64 formate of buffer data
+      const fileUri = getDataUri(file); //base64 formate of buffer data
 
       // { content: "data:application/pdf;base64,JVBERi0xLjcKJc..."  // long base64 string}
 
