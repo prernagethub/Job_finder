@@ -17,7 +17,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
 // cors setup
 const corsOptions = {
   origin: `http://localhost:5173`,
@@ -29,12 +28,12 @@ app.use(cors(corsOptions));
 
 // just to check >>>>>>>
 
-// app.get("/home", (req, res) => {
-//   return res.status(200).json({
-//     message: "I am coming from backend",
-//     success: true,
-//   });
-// });
+app.get("/healthz", (req, res) => {
+  return res.status(200).json({
+    message: "I am coming from backend",
+    success: true,
+  });
+});
 
 // Mount user routes
 app.use("/api/v1/user", userRoute);
