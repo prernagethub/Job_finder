@@ -18,19 +18,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // cors setup
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://job-finder-ddrprddub-prerna-rajputs-projects.vercel.app"
-];
 
 
+// ✅ CORS – FINAL FIX
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: true, // allow all origins (safe for portfolio)
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// ✅ Preflight handler (VERY IMPORTANT)
+app.options("*", cors());
+
 
 // Routes ---------
 
