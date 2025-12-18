@@ -17,49 +17,31 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// cors setup
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://job-finder-ddrprddub-prerna-rajputs-projects.vercel.app",
-];
-
-// app.use(
-//   cors({
-//     origin: allowedOrigins,
-//     credentials: true,
-//     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-//   })
-// );
-
-import cors from "cors";
+// CORS setup - configurable via environment variable
+// Set ALLOWED_ORIGINS as comma separated values in your deployment settings
+// e.g. ALLOWED_ORIGINS=https://job-finder-8gx8uz60z-prerna-rajputs-projects.vercel.app
+const allowedOrigins = (
+  process.env.ALLOWED_ORIGINS || "http://localhost:5173"
+).split(",");
 
 app.use(
   cors({
-    origin: function (origin, callback) {
+    origin(origin, callback) {
+      // allow requests with no origin like from curl or mobile apps
       if (!origin) return callback(null, true);
-
-      // allow localhost
-      if (origin === "http://localhost:5173") {
-        return callback(null, true);
-      }
-
-      // allow ALL vercel preview URLs of your account/project
-      if (
-        origin.endsWith("-prerna-rajputs-projects.vercel.app")
-      ) {
-        return callback(null, true);
-      }
-
-      callback(new Error("Not allowed by CORS"));
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      // you can log blocked origins for debugging
+      console.warn("Blocked CORS request from origin:", origin);
+      return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    optionsSuccessStatus: 200,
   })
 );
 
-// preflight
+// preflight handler
 app.options("*", cors());
-
 
 // Routes ---------
 
