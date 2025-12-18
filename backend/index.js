@@ -18,21 +18,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // cors setup
+// const allowedOrigins = [
+//   "http://localhost:5173", // Local frontend
+//   "https://job-portal-theta-eosin.vercel.app", // Your Vercel frontend URL,
+// ];
 
-
-// ✅ CORS – FINAL FIX
 app.use(
   cors({
-    origin: true, // allow all origins (safe for portfolio)
+    origin: true,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   })
 );
-
-// ✅ Preflight handler (VERY IMPORTANT)
-app.options("*", cors());
-
 
 // Routes ---------
 
