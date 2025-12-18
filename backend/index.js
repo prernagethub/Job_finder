@@ -17,31 +17,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// CORS setup - configurable via environment variable
-// Set ALLOWED_ORIGINS as comma separated values in your deployment settings
-// e.g. ALLOWED_ORIGINS=https://job-finder-8gx8uz60z-prerna-rajputs-projects.vercel.app
-const allowedOrigins = (
-  process.env.ALLOWED_ORIGINS || "http://localhost:5173"
-).split(",");
+// cors setup
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://job-finder-ddrprddub-prerna-rajputs-projects.vercel.app"
+];
+
 
 app.use(
   cors({
-    origin(origin, callback) {
-      // allow requests with no origin like from curl or mobile apps
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
-      // you can log blocked origins for debugging
-      console.warn("Blocked CORS request from origin:", origin);
-      return callback(new Error("Not allowed by CORS"));
-    },
+    origin: allowedOrigins,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    optionsSuccessStatus: 200,
   })
 );
-
-// preflight handler
-app.options("*", cors());
 
 // Routes ---------
 
