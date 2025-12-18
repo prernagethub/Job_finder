@@ -31,24 +31,35 @@ const allowedOrigins = [
 //   })
 // );
 
+import cors from "cors";
+
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // Postman / server-to-server
+      if (!origin) return callback(null, true);
 
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
+      // allow localhost
+      if (origin === "http://localhost:5173") {
+        return callback(null, true);
       }
+
+      // allow ALL vercel preview URLs of your account/project
+      if (
+        origin.endsWith("-prerna-rajputs-projects.vercel.app")
+      ) {
+        return callback(null, true);
+      }
+
+      callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   })
 );
 
-// Preflight
+// preflight
 app.options("*", cors());
+
 
 // Routes ---------
 
