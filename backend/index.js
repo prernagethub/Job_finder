@@ -19,17 +19,36 @@ app.use(cookieParser());
 
 // cors setup
 const allowedOrigins = [
-  "http://localhost:5173", // Local frontend
-  "https://job-portal-theta-eosin.vercel.app", // Your Vercel frontend URL,
+  "http://localhost:5173",
+  "https://job-finder-ddrprddub-prerna-rajputs-projects.vercel.app",
 ];
+
+// app.use(
+//   cors({
+//     origin: allowedOrigins,
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+//   })
+// );
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // Postman / server-to-server
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   })
 );
+
+// Preflight
+app.options("*", cors());
 
 // Routes ---------
 
